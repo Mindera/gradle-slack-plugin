@@ -3,7 +3,7 @@
 Gradle plugin to send Slack messages according to your build lifecycle. Useful to integrate with a CI server, to notify everyone that some gradle task has failed.
 
 ![Build Passing](http://i.imgur.com/eIq9hp1.png)
-![Build Failing](http://i.imgur.com/56buA4H.png)
+![Build Failing](http://i.imgur.com/cgf5fHf.png)
 
 ## Usage
 
