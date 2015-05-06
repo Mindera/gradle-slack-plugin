@@ -1,0 +1,24 @@
+apply plugin: 'groovy'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    classpath 'net.gpedro.integrations.slack:slack-webhook:1.0.4-SNAPSHOT'
+}
+
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+group = 'org.mindera.gradle.slack'
+version = '1.0-SNAPSHOT'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
+}
