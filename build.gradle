@@ -3,7 +3,6 @@ apply plugin: 'groovy'
 dependencies {
     compile gradleApi()
     compile localGroovy()
-    classpath 'net.gpedro.integrations.slack:slack-webhook:1.0.4-SNAPSHOT'
 }
 
 apply plugin: 'maven'

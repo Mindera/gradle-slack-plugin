@@ -2,6 +2,9 @@
 
 Gradle plugin to send Slack messages according to your build lifecycle. Useful to integrate with a CI server, to notify everyone that some gradle task has failed.
 
+![Build Passing](http://i.imgur.com/eIq9hp1.png)
+![Build Failing](http://i.imgur.com/56buA4H.png)
+
 ## Usage
 
 Note that it's not yet available in Maven Central, but soon will be.
@@ -36,4 +39,14 @@ slack {
 }
 ```
 
+## Author
+
+Joao Prudencio, joao.prudencio@mindera.com
+
 ## Credits
+
+[Slack WebHook Java API](https://github.com/gpedro/slack-webhook) by [gpedro](https://github.com/gpedro)
+
+## License
+
+gradle-slack-plugin is available under the MIT license. See the LICENSE file for more info.
