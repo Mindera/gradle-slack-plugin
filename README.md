@@ -38,6 +38,7 @@ apply plugin: 'org.mindera.gradle.slack'
 ## Configuration 
 
 First you need to setup slack to receive incoming messages:
+
 1. Go to *your_team*.slack.com/services/new/incoming-webhook
 2. Press Add Incoming WebHooks Integration
 3. Grab your WebHook URL
