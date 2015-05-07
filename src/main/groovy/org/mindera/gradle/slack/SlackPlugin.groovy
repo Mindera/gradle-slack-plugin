@@ -36,11 +36,19 @@ class SlackPlugin implements Plugin<Project> {
 
             @Override
             void afterExecute(Task task, TaskState state) {
-                boolean shouldSendMessage = state.getFailure() != null || shouldMonitorTask(task);
-                boolean success = state.getFailure() == null
+                Throwable failure = state.getFailure()
+                boolean shouldSendMessage = failure != null || shouldMonitorTask(task);
 
-                if (shouldSendMessage)
-                    sendFormattedSlackMessage(task.getName(), task.getDescription(), success, mExtension.url)
+                if (shouldSendMessage) {
+                    boolean success = failure == null
+                    String taskName = task.getName()
+                    String taskDescription = task.getDescription()
+                    String errorMessage = !success && failure.getCause() != null? failure.getCause().toString(): ''
+                    String message = taskDescription+'\n'+errorMessage
+                    String slackUrl = mExtension.getUrl()
+
+                    sendFormattedSlackMessage(taskName,message,success,slackUrl)
+                }
             }
         })
     }
@@ -54,13 +62,13 @@ class SlackPlugin implements Plugin<Project> {
         return false
     }
 
-    void sendFormattedSlackMessage(String taskName, String taskDescription, boolean success, String url) {
+    void sendFormattedSlackMessage(String taskName, String message, boolean success, String url) {
         SlackApi api = new SlackApi(url);
+
         SlackMessage slackMessage = new SlackMessage("Gradle build finished")
 
         SlackAttachment attachments = new SlackAttachment()
         attachments.setColor(success ? 'good' : 'danger')
-        String message = taskDescription
         attachments.setText(message)
         attachments.setFallback(message)
 

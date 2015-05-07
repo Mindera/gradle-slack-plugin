@@ -6,18 +6,69 @@ dependencies {
 }
 
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 repositories {
     mavenCentral()
 }
 
 group = 'org.mindera.gradle.slack'
-version = '1.0-SNAPSHOT'
+version = '1.0.1'
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+// TODO signing the jar
+//signing {
+//    sign configurations.archives
+//}
 
 uploadArchives {
     repositories {
         mavenDeployer {
+
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
             repository(url: uri('../repo'))
+
+            pom.project {
+                name 'gradle-slack-plugin'
+                packaging 'jar'
+                description 'Gradle plugin to send messages to Slack after each build '
+                url 'https://github.com/Mindera/gradle-slack-plugin'
+
+                scm {
+                    connection 'scm:git@github.com:Mindera/gradle-slack-plugin.git'
+                    developerConnection 'scm:git@github.com:Mindera/gradle-slack-plugin.git'
+                    url 'https://github.com/Mindera/gradle-slack-plugin'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License (MIT)'
+                        url 'http://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'joaoprudencio'
+                        name 'Joao Prudencio'
+                        email 'joao.prudencio@mindera.com'
+                    }
+                }
+            }
         }
     }
 }
