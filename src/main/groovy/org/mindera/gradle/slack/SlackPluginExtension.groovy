@@ -5,6 +5,7 @@ package org.mindera.gradle.slack
 class SlackPluginExtension {
     String url
     List<Object> dependsOnTasks
+    String title
 
     void dependsOnTasks(Object... paths) {
         this.dependsOnTasks = Arrays.asList(paths)

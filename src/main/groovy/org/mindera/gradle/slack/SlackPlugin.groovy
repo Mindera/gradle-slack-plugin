@@ -1,15 +1,13 @@
 package org.mindera.gradle.slack
 
+import net.gpedro.integrations.slack.SlackApi
+import net.gpedro.integrations.slack.SlackMessage
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.tasks.TaskState
-import net.gpedro.integrations.slack.SlackApi
-import net.gpedro.integrations.slack.SlackAttachment
-import net.gpedro.integrations.slack.SlackField
-import net.gpedro.integrations.slack.SlackMessage
-import org.mindera.gradle.slack.utils.GitUtils
+import org.mindera.gradle.slack.model.SlackMessageTransformer
 
 /**
  * Created by joaoprudencio on 05/05/15.
@@ -36,21 +34,22 @@ class SlackPlugin implements Plugin<Project> {
 
             @Override
             void afterExecute(Task task, TaskState state) {
-                Throwable failure = state.getFailure()
-                boolean shouldSendMessage = failure != null || shouldMonitorTask(task);
-
-                if (shouldSendMessage) {
-                    boolean success = failure == null
-                    String taskName = task.getName()
-                    String taskDescription = task.getDescription()
-                    String errorMessage = !success && failure.getCause() != null? failure.getCause().toString(): ''
-                    String message = taskDescription+'\n'+errorMessage
-                    String slackUrl = mExtension.getUrl()
-
-                    sendFormattedSlackMessage(taskName,message,success,slackUrl)
-                }
+                handleTaskFinished(task, state)
             }
         })
+    }
+
+    void handleTaskFinished(Task task, TaskState state) {
+        Throwable failure = state.getFailure()
+        boolean shouldSendMessage = failure != null || shouldMonitorTask(task);
+
+        // only send a slack message if the task failed
+        // or the task is registered to be monitored
+        if (shouldSendMessage) {
+            SlackMessage slackMessage = SlackMessageTransformer.buildSlackMessage(mExtension.title, task, state)
+            SlackApi api = new SlackApi(mExtension.url)
+            api.call(slackMessage)
+        }
     }
 
     boolean shouldMonitorTask(Task task) {
@@ -60,50 +59,5 @@ class SlackPlugin implements Plugin<Project> {
             }
         }
         return false
-    }
-
-    void sendFormattedSlackMessage(String taskName, String message, boolean success, String url) {
-        SlackApi api = new SlackApi(url);
-
-        SlackMessage slackMessage = new SlackMessage("Gradle build finished")
-
-        SlackAttachment attachments = new SlackAttachment()
-        attachments.setColor(success ? 'good' : 'danger')
-        attachments.setText(message)
-        attachments.setFallback(message)
-
-        SlackField taskField = new SlackField()
-        taskField.setTitle("Task")
-        taskField.setValue(taskName)
-        taskField.setShorten(true)
-        attachments.addFields(taskField)
-
-        SlackField resultField = new SlackField()
-        resultField.setTitle("Task Result")
-        resultField.setValue(success ? 'Passed' : 'Failed')
-        resultField.setShorten(true)
-        attachments.addFields(resultField)
-
-        SlackField branchField = new SlackField()
-        branchField.setTitle("Git Branch")
-        branchField.setValue(GitUtils.branchName())
-        branchField.setShorten(true)
-        attachments.addFields(branchField)
-
-        SlackField authorField = new SlackField()
-        authorField.setTitle("Git Author")
-        authorField.setValue(GitUtils.lastCommitAuthor())
-        authorField.setShorten(true)
-        attachments.addFields(authorField)
-
-        SlackField commitField = new SlackField()
-        commitField.setTitle("Git Commit")
-        commitField.setValue(GitUtils.lastCommitMessage())
-        commitField.setShorten(true)
-        attachments.addFields(commitField)
-
-        slackMessage.addAttachments(attachments)
-
-        api.call(slackMessage);
     }
 }
