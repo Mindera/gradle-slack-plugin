@@ -24,7 +24,7 @@ buildscript {
     }
     
     dependencies {
-        classpath 'com.mindera:gradle-slack-plugin:1.0.2'
+        classpath 'com.mindera.gradle.slack:gradle-slack-plugin:1.0.2'
     }
 }
 ```
