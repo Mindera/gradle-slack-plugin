@@ -15,10 +15,9 @@ import com.mindera.gradle.slack.model.SlackMessageTransformer
 class SlackPlugin implements Plugin<Project> {
 
     SlackPluginExtension mExtension
-    Project mProject
 
     void apply(Project project) {
-        mProject = project
+
         mExtension = project.extensions.create('slack', SlackPluginExtension)
 
         project.afterEvaluate {
