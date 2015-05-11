@@ -12,8 +12,8 @@ repositories {
     mavenCentral()
 }
 
-group = 'org.mindera.gradle.slack'
-version = '1.0.1'
+group = 'com.mindera'
+version = '1.0.2'
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
