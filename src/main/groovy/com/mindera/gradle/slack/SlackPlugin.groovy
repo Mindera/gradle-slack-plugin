@@ -1,4 +1,4 @@
-package org.mindera.gradle.slack
+package com.mindera.gradle.slack
 
 import net.gpedro.integrations.slack.SlackApi
 import net.gpedro.integrations.slack.SlackMessage
@@ -7,7 +7,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.tasks.TaskState
-import org.mindera.gradle.slack.model.SlackMessageTransformer
+import com.mindera.gradle.slack.model.SlackMessageTransformer
 
 /**
  * Created by joaoprudencio on 05/05/15.

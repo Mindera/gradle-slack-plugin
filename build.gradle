@@ -12,7 +12,7 @@ repositories {
     mavenCentral()
 }
 
-group = 'org.mindera.gradle.slack'
+group = 'com.mindera.gradle.slack'
 version = '1.0.1'
 
 task javadocJar(type: Jar) {

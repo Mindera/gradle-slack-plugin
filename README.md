@@ -24,7 +24,7 @@ buildscript {
     }
     
     dependencies {
-        classpath 'org.mindera.gradle.slack:gradle-slack-plugin:1.0-SNAPSHOT'
+        classpath 'com.mindera.gradle.slack:gradle-slack-plugin:1.0-SNAPSHOT'
     }
 }
 ```
@@ -32,7 +32,7 @@ buildscript {
 Apply it:
 
 ```groovy
-apply plugin: 'org.mindera.gradle.slack'
+apply plugin: 'com.mindera.gradle.slack'
 ```
 
 ## Configuration 

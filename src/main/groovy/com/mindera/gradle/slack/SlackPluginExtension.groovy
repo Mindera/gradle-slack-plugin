@@ -1,4 +1,4 @@
-package org.mindera.gradle.slack
+package com.mindera.gradle.slack
 /**
  * Created by joaoprudencio on 05/05/15.
  */
