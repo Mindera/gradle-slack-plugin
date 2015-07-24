@@ -13,7 +13,9 @@ repositories {
 }
 
 group = 'com.mindera.gradle.slack'
-version = '1.0.2'
+version = '1.0.3'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
