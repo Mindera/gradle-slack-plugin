@@ -1,5 +1,6 @@
 package com.mindera.gradle.slack
 
+import com.mindera.gradle.slack.model.SlackMessageTransformer
 import net.gpedro.integrations.slack.SlackApi
 import net.gpedro.integrations.slack.SlackMessage
 import org.gradle.api.Plugin
@@ -7,7 +8,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.tasks.TaskState
-import com.mindera.gradle.slack.model.SlackMessageTransformer
 
 /**
  * Created by joaoprudencio on 05/05/15.
@@ -21,7 +21,7 @@ class SlackPlugin implements Plugin<Project> {
         mExtension = project.extensions.create('slack', SlackPluginExtension)
 
         project.afterEvaluate {
-            if (mExtension.url != null)
+            if (mExtension.url != null && mExtension.enabled)
                 monitorTasksLifecyle(project)
         }
     }

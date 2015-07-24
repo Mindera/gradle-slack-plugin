@@ -6,6 +6,7 @@ class SlackPluginExtension {
     String url
     List<Object> dependsOnTasks
     String title
+    boolean enabled
 
     void dependsOnTasks(Object... paths) {
         this.dependsOnTasks = Arrays.asList(paths)
