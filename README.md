@@ -7,24 +7,21 @@ Gradle plugin to send Slack messages according to your build lifecycle. Useful t
 
 ## Usage
 
-Note that it's not yet available in Maven Central, but soon will be.
-
-Add it to your buildscript dependencies:
+The plugin is available in [JitPack](https://jitpack.io/). Just add the following to your buildscript dependencies:
 
 ```groovy
 buildscript {
 
     repositories {
-        mavenCentral()
-
+    	....
         maven {
-	        // Temporary maven repository, until it is not available in Maven Central
-            url uri('http://joaoprudencio.com/m2/repository')
+            url "https://jitpack.io"
         }
     }
     
     dependencies {
-        classpath 'com.mindera.gradle.slack:gradle-slack-plugin:1.0.2'
+    	...
+        classpath 'com.github.Mindera:gradle-slack-plugin:1.0.4'
     }
 }
 ```
