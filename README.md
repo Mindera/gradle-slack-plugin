@@ -4,7 +4,6 @@ Gradle plugin to send Slack messages according to your build lifecycle. Useful t
 
 ![Build Passing](http://i.imgur.com/eIq9hp1.png)
 ![Build Failing](http://i.imgur.com/cgf5fHf.png)
-[![Release](https://img.shields.io/github/release/jitpack/gradle-simple.svg?label=maven)](https://jitpack.io/#Mindera/gradle-slack-plugin)
 
 ## Usage
 
