@@ -49,13 +49,21 @@ slack {
 
 By default, everytime a build fails a slack message will be sent to the channel you configured. If a build succeeds nothing happens.
 
-If you also want to send messages on success for some tasks you set a list of tasks for that:
+There are more optional fields that enable you to configure the slack integration:
+
 ```groovy
 slack {
     url 'your WebHook URL'
     dependsOnTasks 'testDebug', 'publishApkRelease'
+    title 'my app name'
+    enabled = isCDMachine()
 }
 ```
+
+*	dependsOnTasks: let you specify a list of tasks that will trigger a message to slack, in case of error and success;
+*	title: the title of the slack message, can be the name of your app for instance;
+*	enabled: a boolean to define if the slack integration is active or not, useful to avoid sending messages on your local builds.
+
 
 ## Credits
 
