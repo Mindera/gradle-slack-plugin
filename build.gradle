@@ -12,8 +12,8 @@ repositories {
     mavenCentral()
 }
 
-group = 'com.mindera.gradle.slack'
-version = '1.0.3'
+group = 'com.github.Mindera'
+version = '1.0.7'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
