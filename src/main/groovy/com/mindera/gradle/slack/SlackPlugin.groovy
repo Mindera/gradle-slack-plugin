@@ -7,6 +7,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
+import org.gradle.api.logging.StandardOutputListener
 import org.gradle.api.tasks.TaskState
 
 /**
@@ -15,9 +16,11 @@ import org.gradle.api.tasks.TaskState
 class SlackPlugin implements Plugin<Project> {
 
     SlackPluginExtension mExtension
+    StringBuilder mTaskLogBuilder
 
     void apply(Project project) {
 
+        mTaskLogBuilder = new StringBuilder()
         mExtension = project.extensions.create('slack', SlackPluginExtension)
 
         project.afterEvaluate {
@@ -27,9 +30,18 @@ class SlackPlugin implements Plugin<Project> {
     }
 
     void monitorTasksLifecyle(Project project) {
+
+
         project.getGradle().getTaskGraph().addTaskExecutionListener(new TaskExecutionListener() {
             @Override
-            void beforeExecute(Task task) {}
+            void beforeExecute(Task task) {
+                task.logging.addStandardOutputListener(new StandardOutputListener() {
+                    @Override
+                    void onOutput(CharSequence charSequence) {
+                        mTaskLogBuilder.append(charSequence)
+                    }
+                })
+            }
 
             @Override
             void afterExecute(Task task, TaskState state) {
@@ -45,7 +57,7 @@ class SlackPlugin implements Plugin<Project> {
         // only send a slack message if the task failed
         // or the task is registered to be monitored
         if (shouldSendMessage) {
-            SlackMessage slackMessage = SlackMessageTransformer.buildSlackMessage(mExtension.title, task, state)
+            SlackMessage slackMessage = SlackMessageTransformer.buildSlackMessage(mExtension.title, task, state, mTaskLogBuilder.toString())
             SlackApi api = new SlackApi(mExtension.url)
             api.call(slackMessage)
         }

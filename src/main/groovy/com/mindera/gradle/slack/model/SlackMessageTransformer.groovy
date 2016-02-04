@@ -22,7 +22,7 @@ class SlackMessageTransformer {
     private static final String AUTHOR_TITLE = 'Git Author'
     private static final String COMMIT_TITLE = 'Git Commit'
 
-    static SlackMessage buildSlackMessage(String title, Task task, TaskState state) {
+    static SlackMessage buildSlackMessage(String title, Task task, TaskState state, String taskLog) {
         Throwable failure = state.getFailure()
         boolean success = failure == null
 
@@ -30,10 +30,19 @@ class SlackMessageTransformer {
 
         SlackAttachment attachments = new SlackAttachment()
         attachments.setColor(success ? COLOR_PASSED : COLOR_FAILED)
-        String errorMessage = failure != null && failure.getCause() != null ? failure.getCause().toString() : ''
-        String message = task.getDescription() + '\n' + errorMessage
-        attachments.setText(message)
-        attachments.setFallback(message)
+
+        StringBuilder message = new StringBuilder()
+        message.append(task.getDescription())
+        if (!success && failure != null && failure.getCause() != null) {
+            message.append('\n')
+            message.append(failure.getCause())
+        }
+        if (!success && taskLog != null) {
+            message.append('\n')
+            message.append(taskLog)
+        }
+        attachments.setText(message.toString())
+        attachments.setFallback(message.toString())
 
         SlackField taskField = new SlackField()
         taskField.setTitle(TASK_TITLE)
